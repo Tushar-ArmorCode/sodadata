@@ -427,6 +427,7 @@ class SparkDataSource(SparkSQLBase):
 
     def __init__(self, logs: Logs, data_source_name: str, data_source_properties: dict):
         super().__init__(logs, data_source_name, data_source_properties)
+        self.NUMERIC_TYPES_FOR_PROFILING = ["integer", "int", "double", "float", "decimal", "bigint"]
 
         self.method = data_source_properties.get("method", "hive")
         self.host = data_source_properties.get("host", "localhost")
@@ -476,3 +477,6 @@ class SparkDataSource(SparkSQLBase):
             self.connection = connection
         except Exception as e:
             raise DataSourceConnectionError(self.type, e)
+
+    def cast_to_text(self, expr: str) -> str:
+        return f"CAST({expr} AS VARCHAR(100))"
