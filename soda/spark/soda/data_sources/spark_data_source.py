@@ -25,6 +25,7 @@ def hive_connection_function(
     port: str,
     database: str,
     auth_method: str,
+    configuration: dict,
     **kwargs,
 ):
     """
@@ -59,6 +60,7 @@ def hive_connection_function(
         port=port,
         database=database,
         auth=auth_method,
+        configuration=configuration,
     )
     return connection
 
@@ -471,6 +473,7 @@ class SparkDataSource(SparkSQLBase):
                 organization=self.organization,
                 cluster=self.cluster,
                 server_side_parameters=self.server_side_parameters,
+                configuration=self.configuration,
             )
 
             self.connection = connection
