@@ -105,7 +105,7 @@ data_source: snowflake_landing_zone
 - type: snowflake
   connection:
       host: 0sd89fs09d8f0s9d8f.snflk.com
-      warehouse: XXXL
+      data_source: XXXL
       username: ${SNOWFLAKE_USERNAME}
       password: ${SNOWFLAKE_PASSWORD}
       role: admin
