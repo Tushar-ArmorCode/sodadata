@@ -15,7 +15,7 @@ from soda.contracts.contract_verification import (
     VerificationWarehouses,
 )
 from soda.contracts.impl.contract_verification_impl import VerificationWarehouse
-from soda.contracts.impl.warehouse import Warehouse
+from soda.contracts.impl.data_source import Warehouse
 
 
 class TestVerificationWarehouse(VerificationWarehouse):

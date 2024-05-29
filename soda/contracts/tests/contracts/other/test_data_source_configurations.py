@@ -16,7 +16,7 @@ def test_warehouse_file_variable_resolving(environ):
     environ["POSTGRES_DATABASE"] = "sodasql"
     environ["POSTGRES_USERNAME"] = "sodasql"
 
-    warehouse_file_path = os.path.join(os.path.dirname(__file__), "test_warehouse_configurations.yml")
+    warehouse_file_path = os.path.join(os.path.dirname(__file__), "test_data_source_configurations.yml")
 
     contract_verification = ContractVerification.builder().with_warehouse_yaml_file(warehouse_file_path).build()
 

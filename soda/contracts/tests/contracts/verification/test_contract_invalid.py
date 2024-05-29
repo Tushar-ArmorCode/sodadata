@@ -1,5 +1,5 @@
 from contracts.helpers.contract_parse_errors import get_parse_errors_str
-from contracts.helpers.test_warehouse import TestWarehouse
+from contracts.helpers.test_data_source import TestWarehouse
 from helpers.test_table import TestTable
 from soda.execution.data_type import DataType
 

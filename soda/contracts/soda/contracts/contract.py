@@ -36,7 +36,7 @@ from soda.contracts.check import (
 from soda.contracts.impl.json_schema_verifier import JsonSchemaVerifier
 from soda.contracts.impl.logs import Location, Log, LogLevel, Logs
 from soda.contracts.impl.soda_cloud import SodaCloud
-from soda.contracts.impl.warehouse import Warehouse
+from soda.contracts.impl.data_source import Warehouse
 from soda.contracts.impl.yaml_helper import QuotingSerializer, YamlFile, YamlHelper
 
 logger = logging.getLogger(__name__)

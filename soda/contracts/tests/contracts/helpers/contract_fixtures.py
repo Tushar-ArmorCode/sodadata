@@ -1,11 +1,11 @@
 from typing import Any
 
 import pytest
-from contracts.helpers.test_warehouse import TestWarehouse
+from contracts.helpers.test_data_source import TestWarehouse
 from helpers.data_source_fixture import DataSourceFixture
 from soda.common.logs import configure_logging
 
-from soda.contracts.impl.warehouse import Warehouse
+from soda.contracts.impl.data_source import Warehouse
 
 
 def pytest_sessionstart(session: Any) -> None:

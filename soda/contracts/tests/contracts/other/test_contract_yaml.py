@@ -1,5 +1,5 @@
 from contracts.helpers.contract_test_tables import contracts_test_table
-from contracts.helpers.test_warehouse import TestWarehouse
+from contracts.helpers.test_data_source import TestWarehouse
 
 
 def test_contract_without_dataset(test_warehouse: TestWarehouse):

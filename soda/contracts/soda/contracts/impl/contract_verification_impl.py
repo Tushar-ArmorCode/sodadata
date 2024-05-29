@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from soda.contracts.contract import Contract, ContractResult
-from soda.contracts.impl.warehouse import Warehouse
+from soda.contracts.impl.data_source import Warehouse
 from soda.contracts.impl.yaml_helper import YamlFile
 
 

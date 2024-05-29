@@ -1,4 +1,4 @@
-from contracts.helpers.test_warehouse import TestWarehouse
+from contracts.helpers.test_data_source import TestWarehouse
 from helpers.test_table import TestTable
 from soda.execution.data_type import DataType
 

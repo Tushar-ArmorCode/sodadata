@@ -46,7 +46,7 @@ For example: with following file structure...
     +- customers.yml
 ```
 And a command line prompt in the root directory, soda can be invoked with
-```
+```Got a topic
 > soda --configuration .soda --contract contracts/customers.yml
 ```
 
