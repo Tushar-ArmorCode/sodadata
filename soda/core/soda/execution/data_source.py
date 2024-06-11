@@ -184,6 +184,13 @@ class DataSource:
             return f"{data_source_type[0:1].upper()}{data_source_type[1:]}"
 
     @staticmethod
+    def generate_limit_clause_str(data_source_type: str) -> str:
+        if "oracle" == data_source_type:
+            return "\nFETCH FIRST {limit} ROWS ONLY"
+        else:
+            return "\n LIMIT {limit}"
+
+    @staticmethod
     def create(
         logs: Logs,
         data_source_name: str,
@@ -234,6 +241,7 @@ class DataSource:
         # See https://sodadata.atlassian.net/browse/CLOUD-5446
         self.migrate_data_source_name = None
         self.quote_tables: bool = data_source_properties.get("quote_tables", False)
+        self.limit_template = DataSource.generate_limit_clause_str(self.type)
 
     def has_valid_connection(self) -> bool:
         query = Query(
@@ -360,7 +368,7 @@ class DataSource:
 
         limit_sql = ""
         if limit is not None:
-            limit_sql = f" \n LIMIT {limit}"
+            limit_sql = self.limit_template.format(limit=limit)
 
         columns_names = ", ".join(self.sql_select_all_column_names(table_name))
 
@@ -763,7 +771,7 @@ class DataSource:
         )
 
         if limit:
-            sql += f"\nLIMIT {limit}"
+            sql += self.limit_template.format(limit=limit)
 
         return sql
 
@@ -797,7 +805,7 @@ class DataSource:
         )
 
         if limit:
-            sql += f"\nLIMIT {limit}"
+            sql += self.limit_template.format(limit=limit)
 
         return sql
 
@@ -819,7 +827,7 @@ class DataSource:
         )
 
         if limit:
-            sql += f"\nLIMIT {limit}"
+            sql += self.limit_template.format(limit=limit)
 
         return sql
 
@@ -844,7 +852,7 @@ class DataSource:
                             SELECT {cast_to_text("'frequent_values'")} AS metric_, ROW_NUMBER() OVER(ORDER BY frequency_ DESC) AS index_, value_, frequency_
                             FROM value_frequencies
                             ORDER BY frequency_ desc
-                            LIMIT {limit_frequent_values}
+                            {self.limit_template.format(limit=limit_frequent_values)}
                         )"""
 
         if data_type_category == "text":
@@ -865,7 +873,7 @@ class DataSource:
                             FROM value_frequencies
                             WHERE value_ IS NOT NULL
                             ORDER BY value_ ASC
-                            LIMIT {limit_mins_maxs}
+                            {self.limit_template.format(limit=limit_mins_maxs)}
                         )"""
 
             maxs_cte = f"""maxs AS (
@@ -873,7 +881,7 @@ class DataSource:
                             FROM value_frequencies
                             WHERE value_ IS NOT NULL
                             ORDER BY value_ DESC
-                            LIMIT {limit_mins_maxs}
+                            {self.limit_template.format(limit=limit_mins_maxs)}
                         )"""
 
             return dedent(
@@ -1396,7 +1404,7 @@ class DataSource:
                 GROUP BY {column_name}
             """
         )
-        sql += f"LIMIT {limit}" if limit else ""
+        sql += self.limit_template.format(limit=limit) if limit else ""
         return dedent(sql)
 
     def sql_select_column_with_filter_and_limit(
@@ -1413,7 +1421,7 @@ class DataSource:
         """
         filter_clauses_str = f"\n WHERE {filter_clause}" if filter_clause else ""
         sample_clauses_str = f"\n {sample_clause}" if sample_clause else ""
-        limit_str = f"\n LIMIT {limit}" if limit else ""
+        limit_str = self.limit_template.format(limit=limit) if limit else ""
         sql = f"SELECT \n" f"  {column_name} \n" f"FROM {table_name}{sample_clauses_str}{filter_clauses_str}{limit_str}"
         return sql
 
