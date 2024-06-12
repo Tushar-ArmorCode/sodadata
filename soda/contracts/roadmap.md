@@ -4,6 +4,7 @@
 * [ ] Quoting problem https://github.com/sodadata/soda-core/issues/2056
 * [ ] filter_sql on checks https://github.com/sodadata/soda-core/issues/2054
 * [ ] Consider to add a data contract language version to the format
+* [ ] Merge soda-core-contract module inside soda-core module
 
 
 * [ ] Test all data source configurations

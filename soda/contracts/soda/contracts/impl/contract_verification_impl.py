@@ -21,26 +21,6 @@ class VerificationDataSource:
     def add_contract(self, contract: Contract) -> None:
         self.contracts.append(contract)
 
-    def ensure_open_and_verify_contracts(self) -> list[ContractResult]:
-        """
-        Ensures that the data source has an open connection and then invokes self.__verify_contracts()
-        """
-        if self.requires_with_block():
-            with self.data_source as d:
-                return self.verify_contracts()
-        else:
-            return self.verify_contracts()
-
-    def verify_contracts(self):
-        """
-        Assumes the data source has an open connection
-        """
-        contract_results: list[ContractResult] = []
-        for contract in self.contracts:
-            contract_result: ContractResult = contract.verify()
-            contract_results.append(contract_result)
-        return contract_results
-
 
 class FileVerificationDataSource(VerificationDataSource):
     def __init__(self, data_source_yaml_file: YamlFile):

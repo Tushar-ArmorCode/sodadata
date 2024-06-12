@@ -197,11 +197,33 @@ class ContractVerification:
     def execute(self) -> ContractVerificationResult:
         all_contract_results: list[ContractResult] = []
         for verification_data_source in self.verification_data_sources:
-            data_source_contract_results: list[ContractResult] = verification_data_source.ensure_open_and_verify_contracts()
+            data_source_contract_results: list[ContractResult] = self.ensure_open_and_verify_contracts(verification_data_source)
             all_contract_results.extend(data_source_contract_results)
         return ContractVerificationResult(
             logs=self.logs, variables=self.variables, contract_results=all_contract_results
         )
+
+    def ensure_open_and_verify_contracts(self, verification_data_source: VerificationDataSource) -> list[ContractResult]:
+        """
+        Ensures that the data source has an open connection and then invokes self.__verify_contracts()
+        """
+        if verification_data_source.requires_with_block():
+            with verification_data_source.data_source as d:
+                return self.verify_contracts()
+        else:
+            return self.verify_contracts()
+
+    def verify_contracts(self):
+        """
+        Assumes the data source has an open connection
+        """
+        contract_results: list[ContractResult] = []
+        for contract in self.contracts:
+            # TODO ensure proper initialization of contract.soda_cloud
+            contract.soda_cloud = self.soda_cloud
+            contract_result: ContractResult = contract.verify()
+            contract_results.append(contract_result)
+        return contract_results
 
 
 class ContractVerificationResult:
